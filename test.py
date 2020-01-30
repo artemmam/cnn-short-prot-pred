@@ -40,7 +40,7 @@ for k in range(58):
                 bad +=1
 print(good/(bad+good))
 
-prot_number = 35
+prot_number = 44
 predicted = np.array(predicted)
 visual_pred = pred[prot_number]
 visual_test = test[prot_number]
@@ -77,80 +77,14 @@ for i in range(30):
 plt.show()
 import sys
 def visualize(prot_number):
-    visual_pred = np.argmax(predicted[prot_number], axis=1).reshape(30, 30)
-    visual_test = np.argmax(test_label[prot_number], axis=1).reshape(30, 30)
-    visual_pred_alt = predicted_final_alt[prot_number]
+    visual_pred = pred[prot_number]
+    visual_test = test[prot_number]
+    #visual_pred_alt = predicted_final_alt[prot_number]
     fig=plt.figure(figsize=(12, 12))
     fig.add_subplot(1, 1, 1)
     plt.imshow(visual_test, cmap='Paired')
     plt.imshow(visual_pred, alpha=.5, cmap='gray')
-    plt.imshow(visual_pred_alt, alpha=.8)
+    #plt.imshow(visual_pred_alt, alpha=.8)
     plt.show()
 
-visualize(12)
-sys.exit(0)
-
-
-
-
-
-
-
-
-
-def reshape_of_reshape_labels(x):
-    lst1 = [[ [0 for col in range(np.array(x).shape[2])] for col in range(np.array(x).shape[0])] for row in range(np.array(x).shape[1])]
-    print(np.shape(lst1))
-    for i in range(len(x)):
-        for j in range(len(x[i])):
-            for k in range(len(x[i][j])):
-                lst1[j][i][k] = x[i][j][k]
-    return lst1
-
-predicted = np.array(reshape_of_reshape_labels(predicted))
-predicted_cm = predicted.reshape(predicted.shape[0]*predicted.shape[1], 8)
-test_label = np.array(reshape_of_reshape_labels(test_label))
-test_label_cm = test_label.reshape(test_label.shape[0]*test_label.shape[1], 8)
-
-
-def sli(pred):
-    gd = []
-    for i in range(len(pred)):
-        if abs(pred[i][0] - pred[i][1])>0.05:
-            gd.append(np.argmax(pred[i]))
-        else:
-            gd.append(-1)
-    return np.array(gd)
-
-
-predicted_final = []
-predicted_final_alt = []
-for k in range(len(predicted)):
-    predicted_final.append(np.argmax(predicted[k], axis=1).reshape(30, 30))
-    predicted_final_alt.append(sli(predicted[k]).reshape(30, 30))
-predicted_final = np.array(predicted_final)
-predicted_final_alt = np.array(predicted_final_alt)
-
-test_new = []
-for k in range(len(test_label)):
-    test_new.append(np.argmax(test_label[k], axis=1).reshape(30, 30))
-test_new = np.array(test_new)
-
-
-
-
-"""
-print('Start recording...')
-output = open('predicted_cm_12_alt.pkl', 'wb')
-pickle.dump(predicted_final_alt, output)
-output.close()
-
-output = open('predicted_cm_12.pkl', 'wb')
-pickle.dump(predicted_final, output)
-output.close()
-
-output = open('cm_test_12.pkl', 'wb')
-pickle.dump(test_new, output)
-output.close()
-print('Recorded successfully')
-"""
+visualize(prot_number)

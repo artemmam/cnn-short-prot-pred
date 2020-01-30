@@ -102,8 +102,8 @@ result = result.drop(bad)
 result = result.reset_index(drop=True)
 print("Drop bad proteins: OK")
 
-result.pdb_name.to_csv('good_prot.csv', index = False)
-result.to_csv('pdb_and_features.csv', header = 'pdb_name')
+result.pdb_name.to_csv('good_prot.csv', index=False)
+result.to_csv('pdb_and_features.csv', header='pdb_name')
 
 
 #  Transform categorical data into binarized labels in a one-vs-all fashion

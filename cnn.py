@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 import pickle
 import keras
 from keras.models import Sequential, Input, Model
@@ -59,10 +58,9 @@ mm = 30
 #model.add(Embedding(100, 8, input_length=mm))
 print('Creating CNN for prediction')
 
+num_classes = np.shape(train_label)[2]
 
 input_layer = Input(shape=(mm, 56, 1))
-print('')
-num_classes = np.shape(train_label)[2]
 layer1 = (Conv2D(8, (mm, 5), activation='linear', W_regularizer=l2(l2_lambda), padding='same'))(input_layer)
 layer1 = (LeakyReLU(alpha=0.1))(layer1)
 layer1 = (Conv2D(16, (mm, 5), activation='linear', W_regularizer=l2(l2_lambda), padding='same'))(layer1)
@@ -108,7 +106,7 @@ print('Start training...')
 train_dropout = model.fit(train, train_label, batch_size=batch_size, epochs=epochs, verbose=0,
                           validation_data=(valid, valid_label))
 print('Model has trained!')
-print('Start predicting...')
+print('Start prediction...')
 predicted = model.predict(test)
 print('Predicted successfully!')
 print(np.shape(predicted))
@@ -116,7 +114,3 @@ print(np.shape(test_label))
 output = open('./predictions/predicted' + str(num_classes) + '.pkl', 'wb')
 pickle.dump(predicted, output)
 output.close()
-#model.save_weights("model_cnn_cm_pred.h5")
-#print("Saved model to disk")
-#import sys
-#sys.exit(0)

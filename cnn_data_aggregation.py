@@ -29,6 +29,7 @@ data_train = load_data('train_data')
 two_matrix = load_data('two_matrix_200')
 
 num_classes = 2
+"""
 threshold = np.linspace(4, 20, num_classes - 1)
 #sys.exit(0)
 
@@ -37,9 +38,11 @@ for i in range(len(two_matrix)):
         two_matrix[i][2][(two_matrix[i][1] <= threshold[0])] = len(threshold)
         two_matrix[i][2][((threshold[j] < two_matrix[i][1]) & (two_matrix[i][1] <= threshold[j+1]))] = j + 1
         two_matrix[i][2][(two_matrix[i][1] >= threshold[-1])] = 0
+"""
 print('Loaded succesfully')
 # ### Файл с матрицами попарных расстояний для каждого белка из списка хороших белков
 # Для всех белков из списка "хороших" белков были посчитаны опрные матрицы размерность 5 x L, которые и будут предсказываться
+"""
 print('Loading json')
 with open("./data.json", "r") as read_file:
     data_supporting_matrix = json.load(read_file)
@@ -48,6 +51,7 @@ data_coords = pd.DataFrame()
 for i in range(len(data_supporting_matrix['data'])):
     coords = pd.DataFrame({'pdb': [data_supporting_matrix['data'][i][0]], 'matrix_coord':[data_supporting_matrix['data'][i][1]]})
     data_coords =  pd.concat([data_coords, coords], ignore_index=True)
+"""
 
 
 good_prot = pd.read_csv('good_prot.csv')
@@ -57,7 +61,7 @@ print('Loaded succesfully')
 # Была незначительная ошибка при формировании выборки, связанная с тем, что некоторые белки повторялись, в связи с чем эти повторения необходимо удалить
 
 # In[37]:
-
+"""
 print('Some drop')
 s=0
 list_to_drop = []
@@ -68,13 +72,15 @@ for pdb in good_prot.pdb_name:
     else:
         list_to_drop.append(pdb)
 
-target_supporting_matrix= data_target.matrix_coord.values
+target_supporting_matrix = data_target.matrix_coord.values
+"""
 data_features = pd.read_csv('pdb_and_features.csv')
 index_to_drop = []
-
+"""
 for pdb in list_to_drop:
     index_to_drop.append(data_features.index[data_features.pdb_name == pdb].tolist())
     data_features = data_features[data_features.pdb_name != pdb]
+"""
 
 
 # In[44]:
@@ -94,16 +100,16 @@ data_features = data_features.reset_index(drop=True)
 
 
 print('Drop succesfully')
-print(len(target_supporting_matrix))
+#print(len(target_supporting_matrix))
 print(len(data_train))
 
 
 def check_prot_size(i):
     print(data_features.iloc[i])
     print('---')
-    print(data_target.iloc[i])
+    #print(data_target.iloc[i])
     print('---')
-    print('Длина белка из матрицы расстояний',np.shape(data_target.iloc[i].matrix_coord)[0])
+    #print('Длина белка из матрицы расстояний',np.shape(data_target.iloc[i].matrix_coord)[0])
     print('Длина белка из выборки для обучения',np.shape(data_train[i])[0])
 
 import sys
